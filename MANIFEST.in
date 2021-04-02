@@ -5,5 +5,6 @@ include *.md
 
 # Include the license file
 include LICENSE
+include OFL.txt
 
 recursive-include vizdet/fonts *

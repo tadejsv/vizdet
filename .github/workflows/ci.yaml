@@ -21,10 +21,10 @@ jobs:
       run: python -m pip install --upgrade pip
     - name: Install dependencies
       run: pip install .[tests]
-    - name: Install linters
-      run: pip install flake8 mypy black
     - name: Run PyTest
       run: pytest
+      env:
+         PYTHONHASHSEED: '0'
     - name: Run Flake8
       run: flake8
     - name: Run mypy

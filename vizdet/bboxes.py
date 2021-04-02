@@ -7,15 +7,6 @@ import numpy as np
 
 from .font import Font
 
-# Default separator for elements of text label
-SEPARATOR = " | "
-
-# How many pixels to pad text on each side for bbox
-BBOX_TEXT_PADDING = 2
-
-# Thickness of bounding box
-BBOX_THICKNESS = 2
-
 # Default color list
 VIBRANT_COLOR_LIST = (
     (238, 119, 51),
@@ -52,6 +43,8 @@ class BBoxes:
         bbox_color_list: A list of colors in RGB format to use for bounding boxes.
         bbox_color_mode: Whether to color bounding boxes based in class or item ids.
         box_thickness: Thickness of the bounding box.
+        padding: How many pixels to pad the label background on each side.
+        separator: What to separate different parts of the text label with
         font_height: Label font height.
     """
 
@@ -61,6 +54,8 @@ class BBoxes:
     bbox_color_list: Sequence[Tuple[int, int, int]] = VIBRANT_COLOR_LIST
     bbox_color_mode: ColorMode = ColorMode.LABELS
     box_thickness: int = 2
+    padding: int = 2
+    separator: str = " | "
     font_height: int = 15
 
     def _get_label_value(
@@ -68,21 +63,20 @@ class BBoxes:
     ) -> Optional[Union[str, int]]:
         """ Get value of the label in ``labels_list``, if set up. """
 
-        if self.labels_list and label:
+        if self.labels_list and label is not None:
             if not isinstance(label, int):
                 raise TypeError(
                     f"Label `{label}` is not an integer; if you supply"
                     " `label_list`, then labels must be integer indices."
                 )
-                try:
-                    return self.labels_list[label]
-                except IndexError:
-                    raise ValueError(
-                        f"Label index `{label}` is not value for `labels_list`"
-                        f" of length {len(self.labels_list)}"
-                    )
-            elif isinstance(label, str):
-                return label
+
+            try:
+                return self.labels_list[label]
+            except IndexError:
+                raise ValueError(
+                    f"Label index `{label}` is not value for `labels_list`"
+                    f" of length {len(self.labels_list)}"
+                )
 
         return label
 
@@ -108,15 +102,18 @@ class BBoxes:
         if not any((item_id, label, label_conf, misc)):
             return None
 
-        id_str, label_str, conf_str = None, None, None
+        id_str, label_str = None, None
         if item_id:
             id_str = f"#{item_id}"
         if label:
             label_str = str(self._get_label_value(label))
         if label_conf:
-            conf_str = f"{label_conf:.2f}"
+            if label_str:
+                label_str = f"{label_str}: {label_conf:.2f}"
+            else:
+                label_str = f"{label_conf:.2f}"
 
-        return SEPARATOR.join(filter(None, (id_str, label_str, conf_str, misc)))
+        return self.separator.join(filter(None, (id_str, label_str, misc)))
 
     def _get_bbox_color(
         self,
@@ -153,21 +150,21 @@ class BBoxes:
         bsize = self.font.font.getTextSize(label, font_height, -1)
 
         text_orig = (
-            box_orig[0] + BBOX_TEXT_PADDING,
-            box_orig[1] - bsize[1] - BBOX_TEXT_PADDING,
+            box_orig[0] + self.padding,
+            box_orig[1] - bsize[1] - self.padding,
         )
         box_pt1 = (
-            box_orig[0] - BBOX_THICKNESS // 2,
-            box_orig[1] - bsize[0][1] - bsize[1] - 2 * BBOX_TEXT_PADDING,
+            box_orig[0] - self.box_thickness // 2,
+            box_orig[1] - bsize[0][1] - bsize[1] - 2 * self.padding,
         )
         box_pt2 = (
-            box_orig[0] + bsize[0][0] + 2 * BBOX_TEXT_PADDING,
-            box_orig[1] + BBOX_THICKNESS // 2,
+            box_orig[0] + bsize[0][0] + 2 * self.padding,
+            box_orig[1] + self.box_thickness // 2,
         )
 
         return text_orig, box_pt1, box_pt2
 
-    def draw_boxes(
+    def draw(
         self,
         img: np.ndarray,
         boxes_coords: Sequence[Tuple[int, int, int, int]],
@@ -229,6 +226,15 @@ class BBoxes:
             text_label = self._get_text_label(item_id, label, label_conf)
             bbox_color = self._get_bbox_color(label, item_id)
 
+            # Draw object bounding box
+            _ = cv2.rectangle(
+                img,
+                pt1=(coords[0], coords[1]),
+                pt2=(coords[2], coords[3]),
+                color=bbox_color[::-1],
+                thickness=self.box_thickness,
+            )
+
             # Draw label-related things
             if text_label:
                 text_org, text_box_pt1, text_box_pt2 = self._get_text_bbox_params(
@@ -252,12 +258,3 @@ class BBoxes:
                     line_type=cv2.LINE_AA,
                     bottomLeftOrigin=True,
                 )
-
-            # Draw object bounding box
-            _ = cv2.rectangle(
-                img,
-                pt1=coords[0:2],
-                pt2=coords[2:4],
-                color=bbox_color[::-1],
-                thickness=BBOX_THICKNESS,
-            )

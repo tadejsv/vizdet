@@ -4,15 +4,11 @@ from typing import Sequence, Tuple, Optional
 import numpy as np
 import cv2  # type: ignore
 
-from .fonts import Font
+from .font import Font
 
 # Common colors
 BLACK = (0, 0, 0)
 WHITE = (255, 255, 255)
-
-# Padding for info box text
-INFO_BOX_HPAD = 5
-INFO_BOX_VPAD = 5
 
 
 @dataclass
@@ -38,8 +34,7 @@ class InfoBox:
         desc_background: The RGB color of the description background.
         font_height_title: The height of the title text.
         font_height_desc: The height of the description text.
-        background_alpha: The transparency of the background. Zero corresponds to
-            completely transparent, and 1 to completely solid.
+        padding: How many pixels to pad the label background on each side.
     """
 
     width: int
@@ -51,7 +46,7 @@ class InfoBox:
     desc_background_color: Tuple[int, int, int] = WHITE
     font_height_title: int = 25
     font_height_desc: int = 20
-    background_alpha: float = 0.5
+    padding: int = 5
 
     def draw(
         self,
@@ -59,11 +54,8 @@ class InfoBox:
         orig_coords: Tuple[int, int],
         desc_lines: Sequence[str],
         title: Optional[str] = None,
-    ) -> np.ndarray:
+    ):
         """Draw the info box.
-
-        Unlike other drawing methods in this package, this method does not alter
-        the original image, it instead returns the new image.
 
         Args:
             img: The image to draw on (will not be altered).
@@ -76,27 +68,21 @@ class InfoBox:
         # Draw title box, if needed
         if title:
             title_orig = (
-                orig_coords[0] + INFO_BOX_HPAD,
-                orig_coords[1] + INFO_BOX_VPAD,
+                orig_coords[0] + self.padding,
+                orig_coords[1] + self.font_height_title + self.padding,
             )
             title_box_pt1 = orig_coords
             title_box_pt2 = (
                 orig_coords[0] + self.width,  # type: ignore
-                orig_coords[1] + self.font_height_title + 2 * INFO_BOX_VPAD,
+                orig_coords[1] + self.font_height_title + 2 * self.padding,
             )
 
-            title_overlay = img.copy()
-
             cv2.rectangle(
-                title_overlay,
+                img,
                 pt1=title_box_pt1,
                 pt2=title_box_pt2,
                 color=self.title_background_color[::-1],
                 thickness=-1,
-            )
-
-            img = cv2.addWeighted(
-                title_overlay, self.background_alpha, img, 1 - self.background_alpha, 0
             )
 
             self.title_font.font.putText(
@@ -107,7 +93,7 @@ class InfoBox:
                 color=self.title_text_color[::-1],
                 thickness=-1,
                 line_type=cv2.LINE_AA,
-                bottomLeftOrigin=False,
+                bottomLeftOrigin=True,
             )
 
             # Set orig_coords to below title box
@@ -121,30 +107,22 @@ class InfoBox:
             orig_coords[0] + self.width,
             orig_coords[1]
             + n_desc * self.font_height_desc
-            + (n_desc + 1) * INFO_BOX_VPAD,
+            + (n_desc + 1) * self.padding,
         )
 
-        desc_overlay = img.copy()
-
         cv2.rectangle(
-            desc_overlay,
+            img,
             pt1=desc_box_pt1,
             pt2=desc_box_pt2,
             color=self.desc_background_color[::-1],
             thickness=-1,
         )
 
-        img = cv2.addWeighted(
-            desc_overlay, self.background_alpha, img, 1 - self.background_alpha, 0
-        )
-
         # Draw description lines
         for idx, line in enumerate(desc_lines):
             line_orig = (
-                orig_coords[0] + INFO_BOX_HPAD,
-                orig_coords[1]
-                + INFO_BOX_VPAD * (idx + 1)
-                + self.font_height_desc * idx,
+                orig_coords[0] + self.padding,
+                orig_coords[1] + self.padding * (idx + 1) + self.font_height_desc * idx,
             )
 
             self.desc_font.font.putText(
@@ -157,5 +135,3 @@ class InfoBox:
                 line_type=cv2.LINE_AA,
                 bottomLeftOrigin=False,
             )
-
-        return img

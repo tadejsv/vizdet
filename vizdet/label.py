@@ -4,7 +4,7 @@ from typing import Tuple, Optional
 import numpy as np
 import cv2  # type: ignore
 
-from .fonts import Font
+from .font import Font
 
 # Common colors
 BLACK = (0, 0, 0)
@@ -33,29 +33,28 @@ class Label:
     def draw(
         self,
         img: np.ndarray,
-        text: str,
         center_coords: Tuple[int, int],
+        text: str,
     ):
         """Draw the label on the image.
 
         Args:
             img: The image to draw on
-            text: The text (label) to draw
             center_coords: The center of the label
+            text: The text (label) to draw
         """
 
         # Prepare coordinates
         bsize = self.font.font.getTextSize(text, self.font_height, -1)
-        text_size = (bsize[0][0], bsize[0][1] + bsize[1])
         text_orig = (
-            center_coords[0] - text_size[0] // 2,
-            center_coords[1] + text_size[1] // 2,
+            center_coords[0] - bsize[0][0] // 2,
+            center_coords[1] + bsize[0][1] // 2,
         )
 
-        box_pt1 = (text_orig[0] - self.padding, text_orig[1] + self.padding)
+        box_pt1 = (text_orig[0] - self.padding, text_orig[1] + bsize[1] + self.padding)
         box_pt2 = (
-            text_orig[0] + text_size[0] + self.padding,
-            text_orig[1] - text_size[1] - self.padding,
+            text_orig[0] + bsize[0][0] + self.padding,
+            text_orig[1] - bsize[0][1] - self.padding,
         )
 
         # Draw text and bounding box
