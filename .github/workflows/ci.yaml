@@ -7,19 +7,20 @@ jobs:
     runs-on: ${{ matrix.operating-system }}
     strategy:
       matrix:
-        operating-system: [ubuntu-latest, windows-latest, macos-latest]
+        operating-system: [ubuntu-latest, macos-latest]
         python-version: [3.7, 3.8]
       fail-fast: false
     steps:
     - name: Checkout
       uses: actions/checkout@v2
-    - name: Set up Python
-      uses: actions/setup-python@v2
+    - name: Setup conda
+      uses: s-weigand/setup-conda@v1
       with:
+        update-conda: true
         python-version: ${{ matrix.python-version }}
-    - name: Update pip
-      run: python -m pip install --upgrade pip
     - name: Install dependencies
+      run: conda install libopencv opencv py-opencv -c conda-forge
+    - name: Install package with test dependencies
       run: pip install .[tests]
     - name: Run PyTest
       run: pytest
