@@ -72,7 +72,7 @@ plt.imshow(img[::-1])
 
 The result should be similar to the image above (but with bounding box colors being different). We drew the detection boxes, as well as an information box given some information what is on the image - all with just the detection result from `boxes` and some custom text for the information box.
 
-All the drawing is done by the `BBoxes` and `InfoBox` classes, which offer arguments to customize the visual appearance. The default font (FiraGO) is used, but this could also be modified. Note that this looks much better than what you would get with the default OpenCV Hershey font. 
+All the drawing is done by the `BBoxes` and `InfoBox` classes, which offer arguments to customize the visual appearance. The default font (FiraGO) is used, but this could also be modified. Note that this looks much better than what you would get with the default OpenCV Hershey font.
 
 The result ( `img` ) is a simply numpy array - not some custom plot object that you would get with Matplotlib or similar libraries. This enables you to further customize the image using other tools, if you would like, or to compose multiple images into a video and so on. The possibilities are endless ; )
 
