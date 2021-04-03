@@ -10,4 +10,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-* The `Visualizer` class, that can draw bouding boxes, information boxes, or free text.
+* The `BBoxes`, `InfoBox`, `Label` and `Font` classes, that can draw bouding objects on the image using custom TrueType fonts.

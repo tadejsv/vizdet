@@ -41,7 +41,7 @@ class BBoxes:
             the labels in ``labels_list``. These (text) labels will then be drawn.
         text_color: Color of the label text.
         bbox_color_list: A list of colors in RGB format to use for bounding boxes.
-        bbox_color_mode: Whether to color bounding boxes based in class or item ids.
+        color_mode: Whether to color bounding boxes based in class or item ids.
         box_thickness: Thickness of the bounding box.
         padding: How many pixels to pad the label background on each side.
         separator: What to separate different parts of the text label with
@@ -52,7 +52,7 @@ class BBoxes:
     labels_list: Optional[Sequence[str]] = None
     text_color: Tuple[int, int, int] = BLACK
     bbox_color_list: Sequence[Tuple[int, int, int]] = VIBRANT_COLOR_LIST
-    bbox_color_mode: ColorMode = ColorMode.LABELS
+    color_mode: ColorMode = ColorMode.LABELS
     box_thickness: int = 2
     padding: int = 2
     separator: str = " | "
@@ -73,7 +73,7 @@ class BBoxes:
             try:
                 return self.labels_list[label]
             except IndexError:
-                raise ValueError(
+                raise IndexError(
                     f"Label index `{label}` is not value for `labels_list`"
                     f" of length {len(self.labels_list)}"
                 )
@@ -96,18 +96,18 @@ class BBoxes:
             misc: Any other text to display.
 
         Returns:
-            The elements of the label concatenated by the ``" | "``.
+            The elements of the label concatenated by the separator.
         """
 
-        if not any((item_id, label, label_conf, misc)):
+        if not any(x is not None for x in (item_id, label, label_conf, misc)):
             return None
 
         id_str, label_str = None, None
-        if item_id:
+        if item_id is not None:
             id_str = f"#{item_id}"
-        if label:
+        if label is not None:
             label_str = str(self._get_label_value(label))
-        if label_conf:
+        if label_conf is not None:
             if label_str:
                 label_str = f"{label_str}: {label_conf:.2f}"
             else:
@@ -122,13 +122,13 @@ class BBoxes:
     ) -> Tuple[int, int, int]:
         """ Get the color of the box, based on label (hash) or item id. """
 
-        color_ind: Optional[int]
-        if self.bbox_color_mode == ColorMode.LABELS:
+        color_ind: Optional[int] = None
+        if self.color_mode == ColorMode.LABELS:
             if isinstance(label, str):
                 color_ind = abs(hash(label))
             elif isinstance(label, int):
                 color_ind = label
-        elif self.bbox_color_mode == ColorMode.IDS:
+        elif self.color_mode == ColorMode.IDS:
             color_ind = item_id
 
         return self.bbox_color_list[(color_ind or 0) % len(self.bbox_color_list)]
@@ -180,7 +180,7 @@ class BBoxes:
         be added to the label, and separated by "|".
 
         The color of the boxes depends either on the labels or item IDs, as
-        was specified in ``bbox_color_mode``. If the color depends on labels,
+        was specified in ``color_mode``. If the color depends on labels,
         and labels are passed as strings, their contents will be hashed to
         obtain a numeric index in the color list.
 
