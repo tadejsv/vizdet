@@ -19,7 +19,7 @@ jobs:
         update-conda: true
         python-version: ${{ matrix.python-version }}
     - name: Install dependencies
-      run: conda install libopencv opencv py-opencv -c conda-forge
+      run: conda install libopencv opencv=4.5.1 py-opencv -c conda-forge
     - name: Install package with test dependencies
       run: pip install .[tests]
     - name: Run PyTest
