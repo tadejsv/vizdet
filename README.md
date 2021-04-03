@@ -63,8 +63,8 @@ bboxes = BBoxes(font_height=40, box_thickness=5, padding=10)
 infobox = InfoBox(width=250, font_height_desc=40, font_height_title=50, padding=15)
 
 # Draw detection results on the image
-bboxes.draw(img, boxes, labels=classes)
-infobox.draw(img, (1650, 20), info_desc, into_title)
+bboxes.draw(img, boxes, labels=labels)
+infobox.draw(img, (1650, 20), info_desc, info_title)
 
 # Plot results
 plt.imshow(img[::-1])
