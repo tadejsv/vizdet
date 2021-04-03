@@ -1,8 +1,6 @@
 # VIZDET
 
-[![PyPI version](https://badge.fury.io/py/vizdet.svg)](https://badge.fury.io/py/vizdet)
-
-![CI](https://github.com/tadejsv/vizdet/workflows/CI/badge.svg)
+[![PyPI version](https://badge.fury.io/py/vizdet.svg)](https://badge.fury.io/py/vizdet) ![CI](https://github.com/tadejsv/vizdet/workflows/CI/badge.svg)
 
 VIZDET - VIZualization for DEtection and Tracking. This library provides a simple interface to plot detection bounding boxes and their labels on an image. It enables the use of custom fonts, allowing you to create visually pleasing detection plots.
 
@@ -14,7 +12,7 @@ The purpose of this library is enable detection model creators to use an out-of-
 * Out of the box options cover the main usecases for object detection, as well as (multi) object tracking - just plug in the detection/tracking results from your model, and you're ready to go
 * Lightweight, with the only dependency being OpenCV (and Numpy)
 
-![Road example](_assets/example_image.png)
+![Road example](https://github.com/tadejsv/vizdet/raw/main/_assets/example_image.png)
 
 ## Installation instructions
 
@@ -101,7 +99,7 @@ You migh also want to display probabilities (confidences) for each object. So sa
 probs = [0.9978, 0.9951, 0.9974, 0.9757, 0.9766, 0.9937, 0.9936, 0.9923]
 ```
 
-Then, to display them on the plot just modify the ` `bboxes.draw` ` function call to
+Then, to display them on the plot just modify the `bboxes.draw` function call to
 
 ``` python
 bboxes.draw(img, boxes, labels=classes, labels_conf=probs)
@@ -109,7 +107,7 @@ bboxes.draw(img, boxes, labels=classes, labels_conf=probs)
 
 The result should look like the image below
 
-![Road example probs](_assets/example_probs.png)
+![Road example probs](https://github.com/tadejsv/vizdet/raw/main/_assets/example_probs.png)
 
 ## License
 
