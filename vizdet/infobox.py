@@ -44,8 +44,8 @@ class InfoBox:
     desc_text_color: Tuple[int, int, int] = BLACK
     title_background_color: Tuple[int, int, int] = BLACK
     desc_background_color: Tuple[int, int, int] = WHITE
-    font_height_title: int = 25
-    font_height_desc: int = 20
+    font_height_title: int = 15
+    font_height_desc: int = 15
     padding: int = 5
 
     def draw(

@@ -12,7 +12,7 @@ The purpose of this library is enable detection model creators to use an out-of-
 * Out of the box options cover the main usecases for object detection, as well as (multi) object tracking - just plug in the detection/tracking results from your model, and you're ready to go
 * Lightweight, with the only dependency being OpenCV (and Numpy)
 
-![Road example](https://github.com/tadejsv/vizdet/raw/main/_assets/example_image.png)
+![Race example](https://github.com/tadejsv/vizdet/raw/main/_assets/example_race.png)
 
 ## Installation instructions
 
@@ -31,7 +31,7 @@ pip install vizdet
 
 ## Quickstart
 
-Let's create our first detection plot. Download [this image](https://github.com/tadejsv/vizdet/raw/main/tests/unit/highway.png) and place it in your working directory. Then, execute this script (you'll also need to install matplotlib to visualize the results)
+Let's create our first detection plot. Download [this image](https://github.com/tadejsv/vizdet/raw/main/_assets/race.png) and place it in your working directory. Then, execute this script (you'll also need to install matplotlib to visualize the results)
 
 ``` python
 import cv2
@@ -40,74 +40,43 @@ from vizdet import BBoxes, InfoBox
 
 # Prepare our detection results
 boxes = [
-    [1267, 762, 1418, 889],
-    [1225, 604, 1327, 693],
-    [1789, 682, 1919, 790],
-    [1595, 389, 1726, 514],
-    [1670, 416, 1820, 566],
-    [904, 440, 1043, 615],
-    [504, 623, 876, 1142],
-    [922, 611, 1213, 1107]
+    [  6,  74, 156, 266],
+    [160,  80, 299, 258],
+    [283,  83, 469, 262],    
+    [358, 250, 428, 273],
+    [  0, 221,  48, 254],
+    [156, 244, 257, 270],
+    [272, 205, 319, 252],  
+    [ 46, 254, 117, 278],
 ]
-labels = ['car', 'car', 'car', 'truck', 'truck', 'truck', 'truck', 'truck']
-info_title = '# Objects'
-info_desc = ['3 cars', '5 trucks']
+labels = [1, 1, 1, 0, 0, 0, 0, 0]
+probs = [0.997, 0.995, 0.997, 0.975, 0.976, 0.993, 0.993, 0.992]
+classes = ['rollerblade', 'person']
+
+# Create text for info box
+into_title = 'Number of objects'
+info_desc = [f'{labels.count(idx)} {cl}s' for idx, cl in enumerate(classes)]
 
 # Read image
-img = cv2.imread('highway.png')
+img = cv2.imread('race.png')
 
 # Prepare objects to draw
-bboxes = BBoxes(font_height=40, box_thickness=5, padding=10)
-infobox = InfoBox(width=250, font_height_desc=40, font_height_title=50, padding=15)
+bboxes = BBoxes(labels_list=classes)
+infobox = InfoBox(width=150)
 
 # Draw detection results on the image
-bboxes.draw(img, boxes, labels=labels)
-infobox.draw(img, (1650, 20), info_desc, info_title)
+bboxes.draw(img, boxes, labels=labels, labels_conf=probs)
+infobox.draw(img, (440, 315), info_desc, into_title)
 
 # Plot results
 plt.imshow(img[::-1])
 ```
 
-The result should be similar to the image above (but with bounding box colors being different). We drew the detection boxes, as well as an information box given some information what is on the image - all with just the detection result from `boxes` and some custom text for the information box.
+The result should be equal to the image above. We drew the detection boxes, shown their labels and probabilities, as well as an information box given some information what is on the image.
 
-All the drawing is done by the `BBoxes` and `InfoBox` classes, which offer arguments to customize the visual appearance. The default font (FiraGO) is used, but this could also be modified. Note that this looks much better than what you would get with the default OpenCV Hershey font.
+All the drawing is done by the `BBoxes` and `InfoBox` classes, which have a simple and intuitive interface. The default font (FiraGO) is used, but this could also be modified. Note that this looks much better than what you would get with the default OpenCV Hershey font.
 
-The result ( `img` ) is a simply numpy array - not some custom plot object that you would get with Matplotlib or similar libraries. This enables you to further customize the image using other tools, if you would like, or to compose multiple images into a video and so on. The possibilities are endless ; )
-
-### Labels as integers
-
-A common situation is that your labels are actually integers, corresponding to some class names from a list. This is handled natively by vizdet. In this case your `labels` would be an integer list and you would also have a `classes` list of string class names:
-
-``` python
-labels = [0, 0, 0, 1, 1, 1, 1, 1]
-classes = ['car', 'truck']
-```
-
-Then, all you need to do is to change the `bboxes` definition to
-
-``` python
-bboxes = BBoxes(
-    labels_list=classes, font_height=40, box_thickness=5, padding=10
-)
-```
-
-### Showing probabilities
-
-You migh also want to display probabilities (confidences) for each object. So say that you have the probabilities in a `probs` list
-
-``` python
-probs = [0.9978, 0.9951, 0.9974, 0.9757, 0.9766, 0.9937, 0.9936, 0.9923]
-```
-
-Then, to display them on the plot just modify the `bboxes.draw` function call to
-
-``` python
-bboxes.draw(img, boxes, labels=classes, labels_conf=probs)
-```
-
-The result should look like the image below
-
-![Road example probs](https://github.com/tadejsv/vizdet/raw/main/_assets/example_probs.png)
+The result ( `img` ) is a simply numpy array - not some custom plot object that you would get with Matplotlib or similar libraries. This enables you to further customize the image using other tools, if you would like, or to compose multiple images into a video and so on. The possibilities are endless 😉
 
 ## License
 
