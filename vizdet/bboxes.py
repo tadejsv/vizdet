@@ -167,10 +167,10 @@ class BBoxes:
     def draw(
         self,
         img: np.ndarray,
-        boxes_coords: Sequence[Tuple[int, int, int, int]],
-        item_ids: Optional[Sequence[int]] = None,
-        labels: Optional[Sequence[Union[str, int]]] = None,
-        labels_conf: Optional[Sequence[float]] = None,
+        boxes_coords: Union[Sequence[Tuple[int, int, int, int]], np.ndarray],
+        item_ids: Union[Optional[Sequence[int]], np.ndarray] = None,
+        labels: Union[Optional[Sequence[Union[str, int]]], np.ndarray] = None,
+        labels_conf: Union[Optional[Sequence[float]], np.ndarray] = None,
     ):
         """Draw the bounding boxes with their labels.
 
@@ -217,14 +217,14 @@ class BBoxes:
                 "The `labels_conf` should be the same lenght as the `boxes_coords`."
             )
 
-        if not isinstance(boxes_coords[0][0], int):
+        if not isinstance(boxes_coords[0][0], (int, np.int, np.int64)):
             raise ValueError("The `boxes_coords` elements should be integers.")
 
         for idx, coords in enumerate(boxes_coords):
             # Get the label and color of the box
-            item_id = item_ids[idx] if item_ids else None
-            label = labels[idx] if labels else None
-            label_conf = labels_conf[idx] if labels_conf else None
+            item_id = item_ids[idx] if item_ids is not None else None
+            label = labels[idx] if labels is not None else None
+            label_conf = labels_conf[idx] if labels_conf is not None else None
 
             text_label = self._get_text_label(item_id, label, label_conf)
             bbox_color = self._get_bbox_color(label, item_id)

@@ -91,6 +91,21 @@ def test_full():
     np.testing.assert_allclose(image, result)
 
 
+def test_full_numpy():
+    image = cv2.imread(str(Path(__file__).parent / "highway.png"))
+    boxes = BBoxes(font_height=30, box_thickness=6, padding=3)
+    boxes.draw(
+        image,
+        np.array(BOXES).astype(int),
+        labels=np.array(LABELS_STR),
+        item_ids=np.array(LABELS),
+        labels_conf=np.array(PROBS),
+    )
+
+    result = cv2.imread(str(Path(__file__).parent / "highway_bboxes_full.png"))
+    np.testing.assert_allclose(image, result)
+
+
 def test_no_labels():
     image = cv2.imread(str(Path(__file__).parent / "highway.png"))
     boxes = BBoxes(font_height=30, box_thickness=6, padding=3)
