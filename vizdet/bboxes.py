@@ -193,7 +193,7 @@ class BBoxes:
         Args:
             img: The image to draw bounding boxes on.
             boxes_coords: Coordinates of bounding boxes in the
-                ``[xmin, ymin, xmax, ymax]`` format.
+                ``[xmin, ymin, xmax, ymax]`` format. Elements should be integers.
             item_ids: Item IDs from tracking.
             labels: Item labels (classes). If ``labels_list`` is set labels
                 should be intigers corresponding to indices of that list.
@@ -202,17 +202,17 @@ class BBoxes:
         """
 
         # Check that all lists are of proper size
-        if item_ids and len(item_ids) != len(boxes_coords):
+        if item_ids is not None and len(item_ids) != len(boxes_coords):
             raise ValueError(
                 "The `item_ids` should be the same lenght as the `boxes_coords`."
             )
 
-        if labels and len(labels) != len(boxes_coords):
+        if labels is not None and len(labels) != len(boxes_coords):
             raise ValueError(
                 "The `labels` should be the same lenght as the `boxes_coords`."
             )
 
-        if labels_conf and len(labels_conf) != len(boxes_coords):
+        if labels_conf is not None and len(labels_conf) != len(boxes_coords):
             raise ValueError(
                 "The `labels_conf` should be the same lenght as the `boxes_coords`."
             )
