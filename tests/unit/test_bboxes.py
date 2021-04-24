@@ -138,10 +138,17 @@ def test_invalid_length():
     boxes = BBoxes()
 
     with pytest.raises(ValueError, match="The `item_ids`"):
-        boxes.draw(np.zeros((100, 100, 3)), [0, 0, 10, 10], item_ids=[0, 1])
+        boxes.draw(np.zeros((100, 100, 3)), [[0, 0, 10, 10]], item_ids=[0, 1])
 
     with pytest.raises(ValueError, match="The `labels`"):
-        boxes.draw(np.zeros((100, 100, 3)), [0, 0, 10, 10], labels=[0, 1])
+        boxes.draw(np.zeros((100, 100, 3)), [[0, 0, 10, 10]], labels=[0, 1])
 
     with pytest.raises(ValueError, match="The `labels_conf`"):
-        boxes.draw(np.zeros((100, 100, 3)), [0, 0, 10, 10], labels_conf=[0, 1])
+        boxes.draw(np.zeros((100, 100, 3)), [[0, 0, 10, 10]], labels_conf=[0, 1])
+
+
+def test_float_bboxes():
+    """ Pass bboxes as floats instead of integers. """
+    bboxes = BBoxes()
+    with pytest.raises(ValueError, match="The `boxes_coords` elements"):
+        bboxes.draw(np.zeros((100, 100, 3)), [(0.0, 0.0, 10.0, 10.0)])

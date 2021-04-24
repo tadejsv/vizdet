@@ -6,6 +6,10 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ## [Unreleased]
 
+### Added
+
+* Throw an error is `boxes` elements in `bboxes_coords` are not integers.
+
 ### Fixed
 
 * Improved check for `None` arguments in `BBoxes`.

@@ -217,6 +217,9 @@ class BBoxes:
                 "The `labels_conf` should be the same lenght as the `boxes_coords`."
             )
 
+        if not isinstance(boxes_coords[0][0], int):
+            raise ValueError("The `boxes_coords` elements should be integers.")
+
         for idx, coords in enumerate(boxes_coords):
             # Get the label and color of the box
             item_id = item_ids[idx] if item_ids else None
