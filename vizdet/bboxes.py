@@ -64,7 +64,7 @@ class BBoxes:
         """ Get value of the label in ``labels_list``, if set up. """
 
         if self.labels_list and label is not None:
-            if not isinstance(label, int):
+            if not isinstance(label, (int, np.integer)):
                 raise TypeError(
                     f"Label `{label}` is not an integer; if you supply"
                     " `label_list`, then labels must be integer indices."
@@ -126,7 +126,7 @@ class BBoxes:
         if self.color_mode == ColorMode.LABELS:
             if isinstance(label, str):
                 color_ind = abs(hash(label))
-            elif isinstance(label, int):
+            elif isinstance(label, (int, np.integer)):
                 color_ind = label
         elif self.color_mode == ColorMode.IDS:
             color_ind = item_id
@@ -217,7 +217,7 @@ class BBoxes:
                 "The `labels_conf` should be the same lenght as the `boxes_coords`."
             )
 
-        if not isinstance(boxes_coords[0][0], (int, np.intc, np.int64)):
+        if not isinstance(boxes_coords[0][0], (int, np.integer)):
             raise ValueError("The `boxes_coords` elements should be integers.")
 
         for idx, coords in enumerate(boxes_coords):
