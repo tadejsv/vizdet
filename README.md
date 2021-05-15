@@ -1,6 +1,8 @@
 # VIZDET
 
-[![PyPI version](https://badge.fury.io/py/vizdet.svg)](https://badge.fury.io/py/vizdet) ![CI](https://github.com/tadejsv/vizdet/workflows/CI/badge.svg)
+[![PyPI version](https://badge.fury.io/py/vizdet.svg)](https://badge.fury.io/py/vizdet)
+
+![CI](https://github.com/tadejsv/vizdet/workflows/CI/badge.svg)
 
 ![Race example](https://github.com/tadejsv/vizdet/raw/main/_assets/example_race.png)
 
@@ -65,7 +67,7 @@ bboxes = BBoxes(labels_list=classes)
 infobox = InfoBox(width=150)
 
 # Draw detection results on the image
-bboxes.draw(img, boxes, labels=labels, labels_conf=probs)
+bboxes.draw(img, boxes, labels=labels, scores=probs)
 infobox.draw(img, (440, 315), info_desc, into_title)
 
 # Plot results

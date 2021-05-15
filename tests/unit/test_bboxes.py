@@ -10,7 +10,7 @@ np.random.seed(42)
 CLASSES = ["car", "truck"]
 LABELS = [1, 0, 0, 0, 0, 1, 0, 1, 1, 1, 1, 0, 1, 1, 0, 0, 0]
 LABELS_STR = [CLASSES[i] for i in LABELS]
-PROBS = np.random.rand(len(LABELS)).tolist()
+SCORES = np.random.rand(len(LABELS)).tolist()
 BOXES = [
     [1039, 347, 1098, 393],
     [1267, 762, 1418, 889],
@@ -58,7 +58,7 @@ def test_labels_list():
 def test_conf():
     image = cv2.imread(str(Path(__file__).parent / "highway.png"))
     boxes = BBoxes(font_height=30, box_thickness=6, padding=3)
-    boxes.draw(image, BOXES, labels=LABELS_STR, labels_conf=PROBS)
+    boxes.draw(image, BOXES, labels=LABELS_STR, scores=SCORES)
 
     result = cv2.imread(str(Path(__file__).parent / "highway_bboxes_labels_conf.png"))
     np.testing.assert_allclose(image, result)
@@ -67,7 +67,7 @@ def test_conf():
 def test_ids():
     image = cv2.imread(str(Path(__file__).parent / "highway.png"))
     boxes = BBoxes(color_mode=ColorMode.IDS, font_height=30, box_thickness=6, padding=3)
-    boxes.draw(image, BOXES, item_ids=LABELS)
+    boxes.draw(image, BOXES, ids=LABELS)
 
     result = cv2.imread(str(Path(__file__).parent / "highway_bboxes_ids.png"))
     np.testing.assert_allclose(image, result)
@@ -76,7 +76,7 @@ def test_ids():
 def test_ids_conf():
     image = cv2.imread(str(Path(__file__).parent / "highway.png"))
     boxes = BBoxes(color_mode=ColorMode.IDS, font_height=30, box_thickness=6, padding=3)
-    boxes.draw(image, BOXES, item_ids=LABELS, labels_conf=PROBS)
+    boxes.draw(image, BOXES, ids=LABELS, scores=SCORES)
 
     result = cv2.imread(str(Path(__file__).parent / "highway_bboxes_ids_conf.png"))
     np.testing.assert_allclose(image, result)
@@ -85,7 +85,7 @@ def test_ids_conf():
 def test_full():
     image = cv2.imread(str(Path(__file__).parent / "highway.png"))
     boxes = BBoxes(font_height=30, box_thickness=6, padding=3)
-    boxes.draw(image, BOXES, labels=LABELS_STR, item_ids=LABELS, labels_conf=PROBS)
+    boxes.draw(image, BOXES, labels=LABELS_STR, ids=LABELS, scores=SCORES)
 
     result = cv2.imread(str(Path(__file__).parent / "highway_bboxes_full.png"))
     np.testing.assert_allclose(image, result)
@@ -98,8 +98,8 @@ def test_full_numpy():
         image,
         np.array(BOXES).astype(int),
         labels=np.array(LABELS_STR),
-        item_ids=np.array(LABELS),
-        labels_conf=np.array(PROBS),
+        ids=np.array(LABELS),
+        scores=np.array(SCORES),
     )
 
     result = cv2.imread(str(Path(__file__).parent / "highway_bboxes_full.png"))
@@ -149,21 +149,21 @@ def test_labels_list_invalid_ind():
 
 
 def test_invalid_length():
-    """ Various parameters passed and length does not match that of boxes_coords. """
+    """ Various parameters passed and length does not match that of bboxes. """
     boxes = BBoxes()
 
-    with pytest.raises(ValueError, match="The `item_ids`"):
-        boxes.draw(np.zeros((100, 100, 3)), [[0, 0, 10, 10]], item_ids=[0, 1])
+    with pytest.raises(ValueError, match="The `ids`"):
+        boxes.draw(np.zeros((100, 100, 3)), [[0, 0, 10, 10]], ids=[0, 1])
 
     with pytest.raises(ValueError, match="The `labels`"):
         boxes.draw(np.zeros((100, 100, 3)), [[0, 0, 10, 10]], labels=[0, 1])
 
-    with pytest.raises(ValueError, match="The `labels_conf`"):
-        boxes.draw(np.zeros((100, 100, 3)), [[0, 0, 10, 10]], labels_conf=[0, 1])
+    with pytest.raises(ValueError, match="The `scores`"):
+        boxes.draw(np.zeros((100, 100, 3)), [[0, 0, 10, 10]], scores=[0, 1])
 
 
 def test_float_bboxes():
     """ Pass bboxes as floats instead of integers. """
     bboxes = BBoxes()
-    with pytest.raises(ValueError, match="The `boxes_coords` elements"):
+    with pytest.raises(ValueError, match="The `bboxes` elements"):
         bboxes.draw(np.zeros((100, 100, 3)), [(0.0, 0.0, 10.0, 10.0)])

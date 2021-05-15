@@ -84,7 +84,7 @@ class BBoxes:
         self,
         item_id: Optional[int] = None,
         label: Optional[Union[str, int]] = None,
-        label_conf: Optional[float] = None,
+        score: Optional[float] = None,
         misc: Optional[str] = None,
     ) -> Optional[str]:
         """Get the text label to draw by combining object info.
@@ -92,14 +92,14 @@ class BBoxes:
         Args:
             item_id: The ID of the object (from tracking).
             label: The label of the object.
-            label_conf: The confidence score (probability) of the label.
+            score: The confidence score (probability) of the label.
             misc: Any other text to display.
 
         Returns:
             The elements of the label concatenated by the separator.
         """
 
-        if not any(x is not None for x in (item_id, label, label_conf, misc)):
+        if not any(x is not None for x in (item_id, label, score, misc)):
             return None
 
         id_str, label_str = None, None
@@ -107,11 +107,11 @@ class BBoxes:
             id_str = f"#{item_id}"
         if label is not None:
             label_str = str(self._get_label_value(label))
-        if label_conf is not None:
+        if score is not None:
             if label_str:
-                label_str = f"{label_str}: {label_conf:.2f}"
+                label_str = f"{label_str}: {score:.2f}"
             else:
-                label_str = f"{label_conf:.2f}"
+                label_str = f"{score:.2f}"
 
         return self.separator.join(filter(None, (id_str, label_str, misc)))
 
@@ -167,16 +167,16 @@ class BBoxes:
     def draw(
         self,
         img: np.ndarray,
-        boxes_coords: Union[Sequence[Tuple[int, int, int, int]], np.ndarray],
-        item_ids: Union[Optional[Sequence[int]], np.ndarray] = None,
+        bboxes: Union[Sequence[Tuple[int, int, int, int]], np.ndarray],
+        ids: Union[Optional[Sequence[int]], np.ndarray] = None,
         labels: Union[Optional[Sequence[Union[str, int]]], np.ndarray] = None,
-        labels_conf: Union[Optional[Sequence[float]], np.ndarray] = None,
+        scores: Union[Optional[Sequence[float]], np.ndarray] = None,
     ):
         """Draw the bounding boxes with their labels.
 
-        The bounding boxes are drawn as specified in ``boxes_coords``, and
+        The bounding boxes are drawn as specified in ``bboxes``, and
         the label is drawn on the upper left part of the box. Any object
-        information (label, item IDs for tracking, label confidences) will
+        information (label, item IDs for tracking, label scores) will
         be added to the label, and separated by "|".
 
         The color of the boxes depends either on the labels or item IDs, as
@@ -192,41 +192,41 @@ class BBoxes:
 
         Args:
             img: The image to draw bounding boxes on.
-            boxes_coords: Coordinates of bounding boxes in the
+            bboxes: Coordinates of bounding boxes in the
                 ``[xmin, ymin, xmax, ymax]`` format. Elements should be integers.
-            item_ids: Item IDs from tracking.
+            ids: Item IDs from tracking.
             labels: Item labels (classes). If ``labels_list`` is set labels
                 should be intigers corresponding to indices of that list.
-            labels_conf: The confidence (probability) of the label, should
+            scores: The confidence (probability) of the label, should
                 be a floating-point number between 0 and 1.
         """
 
         # Check that all lists are of proper size
-        if item_ids is not None and len(item_ids) != len(boxes_coords):
+        if ids is not None and len(ids) != len(bboxes):
             raise ValueError(
-                "The `item_ids` should be the same lenght as the `boxes_coords`."
+                "The `ids` should be the same lenght as the `boxes_coords`."
             )
 
-        if labels is not None and len(labels) != len(boxes_coords):
+        if labels is not None and len(labels) != len(bboxes):
             raise ValueError(
                 "The `labels` should be the same lenght as the `boxes_coords`."
             )
 
-        if labels_conf is not None and len(labels_conf) != len(boxes_coords):
+        if scores is not None and len(scores) != len(bboxes):
             raise ValueError(
-                "The `labels_conf` should be the same lenght as the `boxes_coords`."
+                "The `scores` should be the same lenght as the `boxes_coords`."
             )
 
-        if not isinstance(boxes_coords[0][0], (int, np.integer)):
-            raise ValueError("The `boxes_coords` elements should be integers.")
+        if not isinstance(bboxes[0][0], (int, np.integer)):
+            raise ValueError("The `bboxes` elements should be integers.")
 
-        for idx, coords in enumerate(boxes_coords):
+        for idx, coords in enumerate(bboxes):
             # Get the label and color of the box
-            item_id = item_ids[idx] if item_ids is not None else None
+            item_id = ids[idx] if ids is not None else None
             label = labels[idx] if labels is not None else None
-            label_conf = labels_conf[idx] if labels_conf is not None else None
+            score = scores[idx] if scores is not None else None
 
-            text_label = self._get_text_label(item_id, label, label_conf)
+            text_label = self._get_text_label(item_id, label, score)
             bbox_color = self._get_bbox_color(label, item_id)
 
             # Draw object bounding box
