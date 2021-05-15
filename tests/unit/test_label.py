@@ -24,7 +24,7 @@ def test_no_bg():
 
 
 def test_font():
-    """ Check that various unicode fonts are working with FiraGO. """
+    """Check that various unicode fonts are working with FiraGO."""
     image = cv2.imread(str(Path(__file__).parent / "highway.png"))
     label = Label(font_height=50)
     label.draw(image, (1000, 600), "šose → шоссе → כביש מהיר")
@@ -34,7 +34,7 @@ def test_font():
 
 
 def test_different_font():
-    """ Check that various unicode fonts are working with FiraGO. """
+    """Check that various unicode fonts are working with FiraGO."""
     image = cv2.imread(str(Path(__file__).parent / "highway.png"))
     font = Font(Path(__file__).parent / "FiraMono-Regular.otf")
     label = Label(font, font_height=50)

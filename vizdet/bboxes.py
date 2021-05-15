@@ -24,7 +24,7 @@ WHITE = (255, 255, 255)
 
 
 class ColorMode(Enum):
-    """ Determines what the color of the bounding box is based on. """
+    """Determines what the color of the bounding box is based on."""
 
     LABELS = 1
     IDS = 2
@@ -61,7 +61,7 @@ class BBoxes:
     def _get_label_value(
         self, label: Optional[Union[int, str]]
     ) -> Optional[Union[str, int]]:
-        """ Get value of the label in ``labels_list``, if set up. """
+        """Get value of the label in ``labels_list``, if set up."""
 
         if self.labels_list and label is not None:
             if not isinstance(label, (int, np.integer)):
@@ -120,7 +120,7 @@ class BBoxes:
         label: Optional[Union[str, int]],
         item_id: Optional[int],
     ) -> Tuple[int, int, int]:
-        """ Get the color of the box, based on label (hash) or item id. """
+        """Get the color of the box, based on label (hash) or item id."""
 
         color_ind: Optional[int] = None
         if self.color_mode == ColorMode.LABELS:

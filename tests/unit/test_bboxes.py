@@ -135,21 +135,21 @@ def test_color_list():
 
 
 def test_labels_list_no_int():
-    """ Pass labels_list but labels not integers """
+    """Pass labels_list but labels not integers"""
     boxes = BBoxes(labels_list=CLASSES)
     with pytest.raises(TypeError, match="Label `car`"):
         boxes.draw(np.zeros((100, 100, 3)), [[0, 0, 10, 10]], labels=["car"])
 
 
 def test_labels_list_invalid_ind():
-    """ Pass labels_list but labels index invalid """
+    """Pass labels_list but labels index invalid"""
     boxes = BBoxes(labels_list=CLASSES)
     with pytest.raises(IndexError, match="Label index `10`"):
         boxes.draw(np.zeros((100, 100, 3)), [[0, 0, 10, 10]], labels=[10])
 
 
 def test_invalid_length():
-    """ Various parameters passed and length does not match that of bboxes. """
+    """Various parameters passed and length does not match that of bboxes."""
     boxes = BBoxes()
 
     with pytest.raises(ValueError, match="The `ids`"):
@@ -163,7 +163,7 @@ def test_invalid_length():
 
 
 def test_float_bboxes():
-    """ Pass bboxes as floats instead of integers. """
+    """Pass bboxes as floats instead of integers."""
     bboxes = BBoxes()
     with pytest.raises(ValueError, match="The `bboxes` elements"):
         bboxes.draw(np.zeros((100, 100, 3)), [(0.0, 0.0, 10.0, 10.0)])

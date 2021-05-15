@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.1.6] - 2020-04-15
+
+### Changed
+
+* Change argument names for `BBoxes`: `boxes_coords` -> `bboxes`,  `items_ids` -> `ids` and `labels_conf` -> `scores`.
+
 ## [0.1.5] - 2020-04-25
 
 ### Fixed
@@ -31,4 +37,4 @@ The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
 ### Added
 
-* The `BBoxes`, `InfoBox`, `Label` and `Font` classes, that can draw bouding objects on the image using custom TrueType fonts.
+* The `BBoxes`, `InfoBox`,  `Label` and `Font` classes, that can draw bouding objects on the image using custom TrueType fonts.

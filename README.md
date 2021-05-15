@@ -1,8 +1,6 @@
 # VIZDET
 
-[![PyPI version](https://badge.fury.io/py/vizdet.svg)](https://badge.fury.io/py/vizdet)
-
-![CI](https://github.com/tadejsv/vizdet/workflows/CI/badge.svg)
+[![PyPI version](https://badge.fury.io/py/vizdet.svg)](https://badge.fury.io/py/vizdet) ![CI](https://github.com/tadejsv/vizdet/workflows/CI/badge.svg)
 
 ![Race example](https://github.com/tadejsv/vizdet/raw/main/_assets/example_race.png)
 

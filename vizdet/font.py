@@ -17,7 +17,7 @@ class Font:
 
     @classmethod
     def get_default(cls) -> Any:
-        """ Get the default FiraGo-Regular font. """
+        """Get the default FiraGo-Regular font."""
 
         if not getattr(cls, "_default_font", None):
             default_font_file = Path(__file__).parent / "fonts/FiraGO-Regular.ttf"
