@@ -15,7 +15,8 @@ WHITE = (255, 255, 255)
 class InfoBox:
     """A class for drawing info boxes.
 
-    This class is meant to draw an info box, which is comprised of two parts:
+    This class is meant to draw an info box, which is comprised of two parts
+
     - a **title**, which is a single line of text displayed at the top,
     - a **description**, which consists of multiple lines of text which are
       displayed below the title.

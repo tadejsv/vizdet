@@ -70,6 +70,7 @@ instance/
 
 # Sphinx documentation
 docs/_build/
+docs/source/_build/
 
 # PyBuilder
 target/
@@ -130,3 +131,6 @@ dmypy.json
 
 # Development stuff
 /dev
+
+# VSCode
+.vscode/
