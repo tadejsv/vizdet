@@ -5,9 +5,10 @@
 |--| :--: |
 | 📦 PyPi | <a href="https://badge.fury.io/py/vizdet"><img src="https://badge.fury.io/py/vizdet.svg"></a> |
 | 🐍 Conda | *Coming soon* |
-| 📖 Documentation | *Coming soon* |
+| 📖 Documentation | <a href="https://vizdet.readthedocs.io/en/latest/"><img src="https://readthedocs.org/projects/vizdet/badge/?version=latest"></a> |
 | 🔧 CI | <a><img src="https://github.com/tadejsv/vizdet/workflows/CI/badge.svg"></a> |
 
+![Race example](https://github.com/tadejsv/vizdet/raw/main/_assets/example_race.png)
 
 VIZDET - VIZualization for DEtection and Tracking. This library provides a simple interface to plot detection bounding boxes and their labels on an image. It enables the use of custom fonts, allowing you to create visually pleasing detection plots.
 
