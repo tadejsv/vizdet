@@ -8,7 +8,7 @@
 | 📖 Documentation | <a href="https://vizdet.readthedocs.io/en/latest/"><img src="https://readthedocs.org/projects/vizdet/badge/?version=latest"></a> |
 | 🔧 CI | <a><img src="https://github.com/tadejsv/vizdet/workflows/CI/badge.svg"></a> |
 
-![Race example](https://github.com/tadejsv/vizdet/raw/main/_assets/example_race.png)
+![Race example](https://github.com/tadejsv/vizdet/raw/main/.github/_assets/example_race.png)
 
 VIZDET - VIZualization for DEtection and Tracking. This library provides a simple interface to plot detection bounding boxes and their labels on an image. It enables the use of custom fonts, allowing you to create visually pleasing detection plots.
 
@@ -37,7 +37,7 @@ pip install vizdet
 
 ## Quickstart
 
-Let's create our first detection plot. Download [this image](https://github.com/tadejsv/vizdet/raw/main/_assets/race.png) and place it in your working directory. Then, execute this script (you'll also need to install matplotlib to visualize the results)
+Let's create our first detection plot. Download [this image](https://github.com/tadejsv/vizdet/raw/main/.github/_assets/race.png) and place it in your working directory. Then, execute this script (you'll also need to install matplotlib to visualize the results)
 
 ``` python
 import cv2
