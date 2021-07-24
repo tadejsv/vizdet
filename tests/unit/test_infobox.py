@@ -1,6 +1,6 @@
 from pathlib import Path
 
-import cv2
+import cv2  # type: ignore
 import numpy as np
 
 from vizdet import InfoBox
