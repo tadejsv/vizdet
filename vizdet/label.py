@@ -1,8 +1,8 @@
 from dataclasses import dataclass, field
-from typing import Tuple, Optional
+from typing import Optional, Tuple
 
-import numpy as np
 import cv2  # type: ignore
+import numpy as np
 
 from .font import Font
 
