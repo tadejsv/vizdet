@@ -1,4 +1,4 @@
-__version__ = "0.1.7"
+__version__ = "0.1.8"
 
 from .bboxes import BBoxes, ColorMode  # noqa: F401
 from .font import Font  # noqa: F401

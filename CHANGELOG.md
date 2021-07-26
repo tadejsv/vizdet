@@ -4,6 +4,12 @@ All notable changes to this project will be documented in this file.
 
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 
+## [0.1.8] - 2021-07-26
+
+### Added
+
+* Package now available to install from conda
+
 ## [0.1.7] - 2021-05-18
 
 ### Added
