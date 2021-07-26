@@ -4,7 +4,7 @@
 |  |  |
 |--| :--: |
 | 📦 PyPi | <a href="https://badge.fury.io/py/vizdet"><img src="https://badge.fury.io/py/vizdet.svg"></a> |
-| 🐍 Conda | *Coming soon* |
+| 🐍 Conda | [![Conda Version](https://img.shields.io/conda/vn/conda-forge/vizdet.svg)](https://anaconda.org/conda-forge/vizdet) |
 | 📖 Documentation | <a href="https://vizdet.readthedocs.io/en/latest/"><img src="https://readthedocs.org/projects/vizdet/badge/?version=latest"></a> |
 | 🔧 CI | <a><img src="https://github.com/tadejsv/vizdet/workflows/CI/badge.svg"></a> |
 
@@ -23,16 +23,10 @@ The purpose of this library is enable detection model creators to use an out-of-
 ## Installation instructions
 
 This module requires the freetype OpenCV module, which is not included in the PyPI repository package, so
-I recommend you install the requirements with conda (create a [conda environment first](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-with-commands)):
+I recommend you install the package with conda (create a [conda environment first](https://docs.conda.io/projects/conda/en/latest/user-guide/tasks/manage-environments.html#creating-an-environment-with-commands)):
 
 ``` sh
-conda install libopencv opencv py-opencv -c conda-forge
-```
-
-From here you can install the package with pip, as usual
-
-``` sh
-pip install vizdet
+conda install vizdet -c conda-forge
 ```
 
 ## Quickstart

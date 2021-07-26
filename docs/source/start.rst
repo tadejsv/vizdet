@@ -10,8 +10,10 @@ Using conda
 
 Installing vizdet with conda is recommended, as it makes sure the right dependencies are installed.
 
-.. note::
-    Conda package will be available soon. For now, use pip installation
+.. code-block:: console
+
+    conda install vizdet -c conda-forge
+
 
 Using pip
 ~~~~~~~~~
